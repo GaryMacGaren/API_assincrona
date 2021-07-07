@@ -1,10 +1,8 @@
 from rest_framework import viewsets, generics
-# from escola.models import Aluno, Curso, Matricula
-# from escola.serializer import AlunoSerializerV2 ,AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer, ListaAlunosMatriculadosSerializer
 from api.models import Cliente, Emprestimo
-from api.serializer import ClienteSerializer, EmprestimoSerializer, ListaClientesSerializer, ListaEmprestimosSerializer, ListaEmprestimosClienteSerializer
-# from rest_framework.response import Response
-# from django.views.decorators.cache import cache_page
+from api.serializer import ClienteSerializer, EmprestimoSerializer, ListaClientesSerializer, ListaEmprestimosClienteSerializer
+from rest_framework.response import Response
+import datetime
 
 
 class ClientesViewSet(viewsets.ModelViewSet):
@@ -12,17 +10,13 @@ class ClientesViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
     http_method_names = ['get', 'post', 'put']
-    # def get_serializer_class(self):
-    #     if self.request.version == 'v2':
-    #         return AlunoSerializerV2
-    #     else:
-    #         return AlunoSerializer
 
 class EmprestimosViewSet(viewsets.ModelViewSet):
     """Exibindo todos os cursos"""
     queryset = Emprestimo.objects.all()
     serializer_class = EmprestimoSerializer
-    http_method_names = ['get', 'post', 'put']
+    http_method_names = ['get', 'post']
+
 
 class ListaClientesViewSet(generics.ListAPIView):
     def get_queryset(self):
@@ -33,17 +27,24 @@ class ListaClientesViewSet(generics.ListAPIView):
 
 class ListaEmprestimosClienteViewSet(generics.ListAPIView):
     def get_queryset(self):
-        queryset = Emprestimo.objects.filter(cliente_id=self.kwargs['pk'])
+        queryset = Emprestimo.objects.filter(cliente__id=self.kwargs['pk'])
         return queryset
 
     serializer_class = ListaEmprestimosClienteSerializer
 
 
-class ListaEmprestimosViewSet(generics.ListAPIView):
-    def get_queryset(self):
-        queryset = Emprestimo.objects.filter(ticket=self.kwargs['ticket'])
-        return queryset
+class StartValidator(generics.CreateAPIView):
+    def post(self, request, **kwargs):
+        if request.method == "POST":
+            cliente = Cliente.objects.get(id=kwargs['pk'])
+            idade = datetime.datetime.now().year - cliente.data_nascimento.year #TODO melhorar essa logica
+            valor = float(request.data['valor'])
+            return Response('ticket 100')
 
-    serializer_class = ListaEmprestimosSerializer
+    def get(self, request, **kwargs):
+        if request.method == "GET":
+            return Response('GET agora permitido')
+
+    serializer_class = EmprestimoSerializer
 
 

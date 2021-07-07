@@ -9,7 +9,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 class EmprestimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
-        fields = '__all__'
+        fields = ['valor','cliente']
 
 class ListaClientesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,18 +17,8 @@ class ListaClientesSerializer(serializers.ModelSerializer):
         fields = ['nome', 'rg']
 
 class ListaEmprestimosClienteSerializer(serializers.ModelSerializer):
-    emprestimo_nome = serializers.ReadOnlyField(source='emprestimo.cliente.nome')
-    valor = serializers.ReadOnlyField(source='valor')
-    class Meta:
-        model = Emprestimo
-        fields = ['emprestimo_nome', 'valor']
-
-class ListaEmprestimosSerializer(serializers.ModelSerializer):
-    # cliente_nome = serializers.ReadOnlyField(source='cliente.nome')
+    # emprestimo_nome = serializers.ReadOnlyField(source='emprestimo.cliente.nome')
     # valor = serializers.ReadOnlyField(source='valor')
     class Meta:
         model = Emprestimo
         fields = '__all__'
-
-
-
