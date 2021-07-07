@@ -17,8 +17,6 @@ class ListaClientesSerializer(serializers.ModelSerializer):
         fields = ['nome', 'rg']
 
 class ListaEmprestimosClienteSerializer(serializers.ModelSerializer):
-    # emprestimo_nome = serializers.ReadOnlyField(source='emprestimo.cliente.nome')
-    # valor = serializers.ReadOnlyField(source='valor')
     class Meta:
         model = Emprestimo
         fields = '__all__'
