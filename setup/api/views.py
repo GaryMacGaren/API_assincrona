@@ -15,7 +15,7 @@ class EmprestimosViewSet(viewsets.ModelViewSet):
     """Exibe todos os emprestimos na base de dados"""
     queryset = Emprestimo.objects.all()
     serializer_class = EmprestimoSerializer
-    http_method_names = ['get', 'post']
+    http_method_names = ['get']
 
 
 class ListaClientesViewSet(generics.ListAPIView):
