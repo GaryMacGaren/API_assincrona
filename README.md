@@ -96,3 +96,17 @@ Para acessá-la, digite no navegador:
 http://localhost:8000/swagger
 ```
 
+### Docker:
+Para rodar o projeto diretamente de um container, com o docker e docker-compose instalados
+, acesse a pasta raiz do projeto e digite:
+
+```sh
+$ docker-compose up --force-recreate
+```
+E acesse seu navegador no endereço:
+
+```sh
+http://localhost:8000/
+```
+
+Obrigado!
