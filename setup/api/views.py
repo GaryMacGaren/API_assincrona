@@ -2,6 +2,7 @@ from rest_framework import viewsets, generics
 from api.models import Cliente, Emprestimo
 from api.serializer import ClienteSerializer, EmprestimoSerializer, ListaClientesSerializer, ListaEmprestimosClienteSerializer
 from rest_framework.response import Response
+from setup.celery import debug_task
 import datetime
 
 
@@ -42,7 +43,9 @@ class StartValidator(generics.CreateAPIView):
             cliente = Cliente.objects.get(id=kwargs['pk'])
             idade = datetime.datetime.now().year - cliente.data_nascimento.year #TODO melhorar essa logica
             valor = float(request.data['valor'])
-            return Response('ticket 100')
+            ticket = debug_task.delay(idade, valor)
+            return Response(ticket)
+
 
     def get(self, request, **kwargs):
         if request.method == "GET":
@@ -50,4 +53,6 @@ class StartValidator(generics.CreateAPIView):
 
     serializer_class = EmprestimoSerializer
 
-
+# @app.task(bind=True)
+# def validator(self):
+#     print('Request: {0!r}'.format(self.request))
