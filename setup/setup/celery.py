@@ -26,6 +26,6 @@ def validator(*args, **kwargs):
     emprestimo.save()
     return 'Rotina assincrona finalizada'
 
-def importa_models():
+def importa_models():#TODO Jogar para um utils.py
     from api.models import Cliente, Emprestimo
     return Emprestimo
