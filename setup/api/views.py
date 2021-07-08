@@ -2,7 +2,7 @@ from rest_framework import viewsets, generics
 from api.models import Cliente, Emprestimo
 from api.serializer import ClienteSerializer, EmprestimoSerializer, ListaClientesSerializer, ListaEmprestimosClienteSerializer
 from rest_framework.response import Response
-from setup.celery import debug_task, validator
+from setup.celery import validator
 import datetime
 
 class ClientesViewSet(viewsets.ModelViewSet):
@@ -42,12 +42,17 @@ class StartValidator(generics.CreateAPIView):
             cliente = Cliente.objects.get(id=kwargs['pk'])
             idade = datetime.datetime.now().year - cliente.data_nascimento.year #TODO melhorar essa logica
             valor = float(request.data['valor'])
-            ticket = validator.delay([str(idade), str(valor)])
-            return Response(ticket.id)
+            emprestimo = Emprestimo.objects.create(valor=valor, cliente_id=cliente.id)
+            if emprestimo:
+                print('objeto criado com sucesso')
+                resposta = validator.delay(idade=str(idade), valor=str(valor), id_cliente=kwargs['pk']).id
+            else:
+                resposta = 'objeto nao pode ser criado'
+            return Response(resposta)
 
 
     def get(self, request, **kwargs):
         if request.method == "GET":
-            return Response('GET agora permitido')
+            return Response()
 
     serializer_class = EmprestimoSerializer
