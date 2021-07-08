@@ -25,3 +25,13 @@ class ValidatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
         fields = ['valor','cliente']
+
+class ConsultaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['ticket', 'data']
+
+class ConsultaTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['ticket', 'data' ,'aprovado']
