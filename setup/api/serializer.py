@@ -20,3 +20,8 @@ class ListaEmprestimosClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
         fields = '__all__'
+
+class ValidatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['valor','cliente']
