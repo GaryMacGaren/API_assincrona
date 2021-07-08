@@ -9,7 +9,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 class EmprestimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
-        fields = ['valor','cliente']
+        fields = ['valor']
 
 class ListaClientesSerializer(serializers.ModelSerializer):
     class Meta:

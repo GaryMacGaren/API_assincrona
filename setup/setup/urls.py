@@ -14,7 +14,6 @@ urlpatterns = [
     path('', include(router.urls) ),
     path('clientes/<int:pk>/emprestimos', ListaEmprestimosClienteViewSet.as_view()),
     path('clientes/<int:pk>/emprestar/', csrf_exempt(views.StartValidator.as_view())),
-    # path('consultar/<uuid:uuid>', ConsultaViewSet.as_view())
     path('clientes/<int:pk>/consultar', ConsultaViewSet.as_view()),
     path('clientes/<int:pk>/consultar/<uuid:uuid>', ConsultaTicketViewSet.as_view())
 ]
