@@ -9,7 +9,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 class EmprestimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
-        fields = ['valor','cliente']
+        fields = ['valor']
 
 class ListaClientesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +20,18 @@ class ListaEmprestimosClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
         fields = '__all__'
+
+class ValidatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['valor','cliente']
+
+class ConsultaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['ticket', 'data']
+
+class ConsultaTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['ticket', 'data' ,'aprovado']
