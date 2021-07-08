@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 class Cliente(models.Model):
     nome = models.CharField(max_length=30)
@@ -12,7 +13,7 @@ class Cliente(models.Model):
 class Emprestimo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     valor = models.DecimalField(max_digits=8, decimal_places=2)
-    ticket = models.SlugField(max_length=40)
+    ticket = models.UUIDField(max_length=40, default=uuid.uuid4)
     data = models.DateField(auto_now=True)
     aprovado = models.BooleanField(default=False)
 
