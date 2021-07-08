@@ -1,0 +1,47 @@
+version: '3'
+ 
+services:
+  setup:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./setup:/setup
+    command: >
+      sh -c "python3 manage.py migrate &&
+             python3 manage.py carrega_db &&
+             python3 manage.py runserver 0.0.0.0:8000"
+ 
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=supersecretpassword
+    depends_on:
+      - db
+             
+  db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=supersecretpassword
+  redis:
+    image: redis:alpine
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A setup worker --loglevel=info
+    volumes:
+      - ./setup:/setup
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=supersecretpassword
+    depends_on:
+      - redis
+      - db
+      - setup
