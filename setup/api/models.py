@@ -7,7 +7,7 @@ class Cliente(models.Model):
     data_nascimento = models.DateField()
 
     def __str__(self):
-        return f'nome: {self.nome}, rg: {self.rg}'
+        return f'nome: {self.nome} - rg: {self.rg}'
 
 class Emprestimo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
@@ -16,4 +16,4 @@ class Emprestimo(models.Model):
     data = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f'nome: {self.cliente.nome}, valor: {self.valor}'
+        return f'nome: {self.cliente.nome} - valor: {self.valor}'
