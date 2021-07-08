@@ -1,6 +1,7 @@
 from rest_framework import viewsets, generics
 from api.models import Cliente, Emprestimo
-from api.serializer import ClienteSerializer, EmprestimoSerializer, ListaClientesSerializer, ListaEmprestimosClienteSerializer
+from api.serializer import ClienteSerializer, EmprestimoSerializer, ListaClientesSerializer, ListaEmprestimosClienteSerializer, \
+    ConsultaSerializer, ConsultaTicketSerializer
 from rest_framework.response import Response
 from setup.celery import validator
 import datetime
@@ -56,3 +57,20 @@ class StartValidator(generics.CreateAPIView):
             return Response()
 
     serializer_class = EmprestimoSerializer
+
+class ConsultaViewSet(generics.ListAPIView):
+    """Lista todos os tickets de um determinado cliente"""
+    def get_queryset(self):
+        queryset = Emprestimo.objects.filter(cliente_id=self.kwargs['pk'])
+        return queryset
+
+    serializer_class = ConsultaSerializer
+
+class ConsultaTicketViewSet(generics.ListAPIView):
+    def get_queryset(self):
+        queryset = Emprestimo.objects.filter(cliente_id=self.kwargs['pk'], ticket=self.kwargs['uuid'])
+        return queryset
+
+    serializer_class = ConsultaTicketSerializer
+
+

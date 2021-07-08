@@ -4,19 +4,10 @@ import celery
 from celery import Celery
 from django.conf import settings
 
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'setup.settings')
-# set the default Django settings module for the 'celery' program.
 app = Celery('setup')
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-def importa_models():
-    from api.models import Cliente, Emprestimo
-    return Emprestimo
-
 
 @app.task(bind=True)#TODO refatorar esse codigo e melhorar
 def validator(*args, **kwargs):
@@ -34,3 +25,7 @@ def validator(*args, **kwargs):
 
     emprestimo.save()
     return 'Rotina assincrona finalizada'
+
+def importa_models():
+    from api.models import Cliente, Emprestimo
+    return Emprestimo
